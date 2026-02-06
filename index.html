@@ -2,139 +2,257 @@
 <html lang="hi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Will You Be My Valentine?</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Valentine 💘</title>
 
   <style>
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg,#ffdde1,#ee9ca7);
-      overflow:hidden;
+    :root{
+      --bg1:#ffdde1; --bg2:#ee9ca7;
+      --card: rgba(255,255,255,.78);
+      --shadow: 0 18px 50px rgba(0,0,0,.18);
     }
-
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100svh;
+      display:flex; align-items:center; justify-content:center;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      padding: 18px;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
     .card{
-      width:min(520px,92vw);
-      background:#ffffffcc;
-      border-radius:20px;
-      padding:24px;
-      text-align:center;
-      box-shadow:0 20px 60px rgba(0,0,0,.2);
+      width: min(520px, 96vw);
+      background: var(--card);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius: 22px;
+      padding: 18px 16px 16px;
+      box-shadow: var(--shadow);
       position:relative;
     }
-
     h1{
-      margin-bottom:10px;
+      margin: 6px 0 6px;
+      font-size: 26px;
+      line-height: 1.15;
+      text-align:center;
     }
-
-    p{
-      margin-bottom:20px;
+    .sub{
+      margin: 0 0 14px;
+      text-align:center;
+      font-size: 15px;
+      opacity: .85;
     }
 
     .stage{
       position:relative;
-      height:220px;
-      background:rgba(255,255,255,.6);
-      border-radius:16px;
+      height: 48svh;
+      min-height: 280px;
+      max-height: 420px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.7);
       overflow:hidden;
+      touch-action: none;
     }
 
-    button{
+    .btn{
       position:absolute;
-      padding:12px 20px;
-      border:none;
-      border-radius:999px;
-      font-size:16px;
-      cursor:pointer;
-      transform:translate(-50%,-50%);
-      box-shadow:0 10px 25px rgba(0,0,0,.15);
+      transform: translate(-50%,-50%);
+      border:0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select:none;
+      box-shadow: 0 12px 28px rgba(0,0,0,.16);
+    }
+    #yes{ background:#22c55e; color:#fff; left:50%; top:72%; }
+    #no { background:#ef4444; color:#fff; left:50%; top:35%; }
+
+    .tip{
+      margin: 10px 4px 0;
+      text-align:center;
+      font-size: 13px;
+      opacity:.72;
     }
 
-    #yes{
-      background:#22c55e;
-      color:white;
-      left:50%;
-      top:65%;
-    }
-
-    #no{
-      background:#ef4444;
-      color:white;
-      left:50%;
-      top:35%;
-    }
-
-    .msg{
+    .overlay{
+      position:fixed; inset:0;
       display:none;
-      margin-top:18px;
-      font-size:18px;
-      font-weight:bold;
+      align-items:center; justify-content:center;
+      padding: 18px;
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
+      z-index: 50;
+    }
+    .modal{
+      width: min(520px, 96vw);
+      background: rgba(255,255,255,.92);
+      border-radius: 24px;
+      padding: 18px 16px 16px;
+      box-shadow: var(--shadow);
+      text-align:center;
+      border: 1px solid rgba(255,255,255,.8);
     }
 
-    .hint{
-      margin-top:10px;
-      font-size:13px;
-      opacity:.7;
+    /* Photo style */
+    .photo{
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.16);
+      border: 1px solid rgba(255,255,255,.8);
+    }
+
+    .modal h2{
+      margin: 12px 0 8px;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+    .modal p{ margin: 0 0 12px; font-size: 16px; opacity:.9; }
+    .chips{
+      display:flex; flex-wrap:wrap; gap:10px;
+      justify-content:center;
+      margin: 8px 0 12px;
+    }
+    .chip{
+      background: rgba(238,156,167,.25);
+      border: 1px solid rgba(238,156,167,.45);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .small{
+      font-size: 13px;
+      opacity:.75;
+      margin-top: 6px;
+    }
+
+    /* tiny music hint */
+    .musicNote{
+      font-size: 13px;
+      opacity: .75;
+      margin-top: 8px;
     }
   </style>
 </head>
-
 <body>
 
   <div class="card">
     <h1>Will you be my Valentine, Madam ji? 💘</h1>
-    <p>Ek simple sa sawaal… 😄</p>
+    <div class="sub">Sirf ek “Yes” chahiye 😄</div>
 
-    <div class="stage" id="stage">
-      <button id="no">No 🙈</button>
-      <button id="yes">Yes 😍</button>
+    <div class="stage" id="stage" aria-label="valentine-stage">
+      <button class="btn" id="no" type="button">No 🙈</button>
+      <button class="btn" id="yes" type="button">Yes 😍</button>
     </div>
 
-    <div class="msg" id="msg">
-      Yayyy Madam ji! 💖  
-      First Valentine together… aur last tak tum hi ❤️
-    </div>
+    <div class="tip">Mobile pe “No” ko touch karo… woh bhaag jayega 😉</div>
+  </div>
 
-    <div class="hint">
-      Hint: “No” thoda sharmila hai 😜
+  <!-- Background music file (upload music.mp3 in repo root) -->
+  <audio id="bgm" preload="auto" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <!-- Upload photo.jpg in repo root -->
+      <img class="photo" src="photo.jpg" alt="Us ❤️">
+
+      <h2>Yayyy Madam ji! 💖</h2>
+      <p>First Valentine together… aur har Valentine tumhare saath ❤️</p>
+
+      <div class="chips">
+        <div class="chip">Dinner + Walk? 🍽️🚶‍♂️</div>
+        <div class="chip">Movie + Icecream? 🎬🍦</div>
+        <div class="chip">Coffee Date? ☕💘</div>
+      </div>
+
+      <div class="musicNote">🎵 Music bhi chal rahi hai… just like my heart 😄</div>
+      <p class="small">Tap anywhere to close ✨</p>
     </div>
   </div>
 
 <script>
-  const stage = document.getElementById("stage");
-  const noBtn = document.getElementById("no");
-  const yesBtn = document.getElementById("yes");
-  const msg = document.getElementById("msg");
+  const stage = document.getElementById('stage');
+  const noBtn  = document.getElementById('no');
+  const yesBtn = document.getElementById('yes');
+  const overlay = document.getElementById('overlay');
+  const bgm = document.getElementById('bgm');
 
-  function moveNoButton(){
-    const rect = stage.getBoundingClientRect();
-    const x = 30 + Math.random() * (rect.width - 60);
-    const y = 30 + Math.random() * (rect.height - 60);
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+  function safeRandomPos(avoidX=null, avoidY=null){
+    const r = stage.getBoundingClientRect();
+    const pad = 56;
+    const w = r.width, h = r.height;
+
+    let x = pad + Math.random() * (w - pad*2);
+    let y = pad + Math.random() * (h - pad*2);
+
+    if(avoidX !== null && avoidY !== null){
+      const dx = x - avoidX, dy = y - avoidY;
+      const dist = Math.hypot(dx, dy);
+      if(dist < 110){
+        x = clamp(x + (dx >= 0 ? 140 : -140), pad, w - pad);
+        y = clamp(y + (dy >= 0 ? 110 : -110), pad, h - pad);
+      }
+    }
+    return {x,y};
   }
 
-  stage.addEventListener("mousemove", () => {
-    moveNoButton();
+  function moveNo(avoidX=null, avoidY=null){
+    const {x,y} = safeRandomPos(avoidX, avoidY);
+    noBtn.style.left = x + 'px';
+    noBtn.style.top  = y + 'px';
+  }
+
+  stage.addEventListener('pointermove', (e) => {
+    const r = stage.getBoundingClientRect();
+    const px = e.clientX - r.left;
+    const py = e.clientY - r.top;
+
+    const bx = parseFloat(noBtn.style.left) || r.width/2;
+    const by = parseFloat(noBtn.style.top)  || r.height/2;
+    const d = Math.hypot(px - bx, py - by);
+
+    if(d < 110) moveNo(px, py);
   });
 
-  noBtn.addEventListener("touchstart", (e) => {
-    moveNoButton();
+  noBtn.addEventListener('pointerdown', (e) => {
+    const r = stage.getBoundingClientRect();
+    moveNo(e.clientX - r.left, e.clientY - r.top);
     e.preventDefault();
   });
 
-  yesBtn.addEventListener("click", () => {
-    msg.style.display = "block";
-    noBtn.style.display = "none";
-    yesBtn.innerText = "Always ❤️";
+  async function startMusic(){
+    try{
+      bgm.volume = 0.7;
+      await bgm.play(); // works because this is after a user click
+    }catch(err){
+      // if user has silent mode or blocked autoplay, it's okay
+      console.log("Music couldn't play:", err);
+    }
+  }
+
+  yesBtn.addEventListener('click', async () => {
+    overlay.style.display = 'flex';
+    yesBtn.textContent = 'Yesss 🥰';
+    noBtn.style.display = 'none';
+    await startMusic();
   });
 
-  moveNoButton();
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+  });
+
+  moveNo();
 </script>
 
 </body>
