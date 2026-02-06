@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Madam ji ❤️</title>
+
   <style>
     :root{
       --bg1:#fde2e4; --bg2:#cddafd;
@@ -49,26 +50,20 @@
       padding: 14px 12px;
       font-size: 16px;
       line-height: 1.45;
-      min-height: 116px;
-    }
-    .small{
-      margin-top: 10px;
-      font-size: 12.5px;
-      opacity: .7;
+      min-height: 120px;
       text-align:center;
     }
     .actions{
-      margin-top: 14px;
+      margin-top: 16px;
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      gap:12px;
       justify-content:center;
     }
     button{
       border:0;
       border-radius:999px;
-      padding: 12px 16px;
-      font-size: 15px;
+      padding: 14px 18px;
+      font-size: 16px;
       font-weight: 800;
       cursor:pointer;
       box-shadow: 0 12px 28px rgba(0,0,0,.14);
@@ -76,13 +71,12 @@
     }
     .b1{ background:#111827; color:#fff; }
     .b2{ background:#22c55e; color:#fff; }
-    .b3{ background:#f59e0b; color:#111; }
 
-    /* tiny floating hearts */
     .heart{
-      position:fixed; left:50%; top:60%;
+      position:fixed;
       transform:translate(-50%,-50%);
-      font-size:18px; opacity:0;
+      font-size:18px;
+      opacity:0;
       animation: floatUp 1.9s ease-in forwards;
       pointer-events:none;
       z-index: 99;
@@ -93,7 +87,6 @@
       100%{ transform:translate(-50%,-220%) scale(1.35); opacity:0}
     }
 
-    /* “Still upset” button wiggle */
     .wiggle{ animation: wiggle .25s ease-in-out 2; }
     @keyframes wiggle{
       0%{ transform:translateY(0) }
@@ -102,27 +95,34 @@
       75%{ transform:translateY(-2px) }
       100%{ transform:translateY(0) }
     }
+
+    .small{
+      margin-top: 12px;
+      font-size: 12.5px;
+      opacity: .7;
+      text-align:center;
+    }
   </style>
 </head>
 <body>
 
 <div class="card">
-  <h1>Madam ji… suno na ❤️</h1>
+  <h1>Madam ji… ❤️</h1>
   <div class="sub">Main bas itna chahta hoon ki aap theek feel karo.</div>
 
   <div class="note" id="note">
-    Agar meri kisi baat ya action se aap hurt hui ho, I’m genuinely sorry. <br><br>
-    Main defend nahi kar raha—bas aapko samajhna aur better karna chahta hoon.
+    Agar meri kisi baat ya action se aap hurt hui ho,<br>
+    main genuinely sorry hoon.<br><br>
+    Koi pressure nahi… bas dil se. 🤍
   </div>
 
   <div class="actions">
-    <button class="b1" id="upset">I’m still upset 😤</button>
+    <button class="b1" id="upset">Abhi bhi thoda gussa 😤</button>
     <button class="b2" id="ok">Okay… thoda sa 😊</button>
-    <button class="b3" id="talk">Let’s talk ☎️</button>
   </div>
 
   <div class="small">
-    (Optional) Agar music chahiye, repo me <b>music.mp3</b> add kar do — “Okay” pe play ho jayega.
+    (Hint) “Okay” pe music + hearts ✨
   </div>
 </div>
 
@@ -134,35 +134,29 @@
   const note = document.getElementById('note');
   const upsetBtn = document.getElementById('upset');
   const okBtn = document.getElementById('ok');
-  const talkBtn = document.getElementById('talk');
   const bgm = document.getElementById('bgm');
 
   const upsetLines = [
-    "Theek hai Madam ji… aap gussa raho. Main yahin hoon. 🫶",
-    "Aapka gussa valid hai. Main bas aapko lose nahi karna chahta. ❤️",
-    "Main promise karta hoon: main repeat nahi karunga. Bas ek chance de do. 🙂"
+    "Theek hai… aap gussa raho. Main yahin hoon. 🫶",
+    "Aapka gussa valid hai. Main bas better banna chahta hoon. 🤍",
+    "Jitna time chahiye le lo… main rush nahi kar raha. 🙂"
   ];
   const okLines = [
-    "Thank you Madam ji 🥺❤️  Main aapko genuinely cherish karta hoon.",
-    "Chalo… ek chhoti si smile? 😊  Phir baaki main sambhal lunga.",
-    "Aaj se main actions se prove karunga. Words se nahi. 🤝"
-  ];
-  const talkLines = [
-    "Main ready hoon sunne ke liye. Aap jab comfortable ho, tab bolna. 📞",
-    "5 minute call? Ya voice note? Jo aapko easy lage. 🙂",
-    "Main bas ek cheez chahta hoon: aap feel heard. ❤️"
+    "Thank you… sach me. 🥺❤️",
+    "Ek chhoti si smile kaafi hai mere liye. 😊",
+    "Aaj nahi toh kal, main prove kar dunga. 🤝"
   ];
 
   function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-  function heartBurst(n=10){
+  function heartBurst(n=12){
     const emojis = ["💗","💖","💘","💕","❤️"];
     for(let i=0;i<n;i++){
       const s = document.createElement('span');
       s.className = 'heart';
       s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
       s.style.left = (40 + Math.random()*20) + "%";
-      s.style.top  = (58 + Math.random()*8) + "%";
+      s.style.top  = (58 + Math.random()*10) + "%";
       s.style.fontSize = (16 + Math.random()*16) + "px";
       s.style.animationDelay = (Math.random()*0.15) + "s";
       document.body.appendChild(s);
@@ -170,33 +164,25 @@
     }
   }
 
-  async function tryPlay(){
+  async function startMusic(){
     try{
-      bgm.volume = 0.65;
+      bgm.volume = 0.6;
       await bgm.play();
-    }catch(e){
-      // mobile may block if file missing or muted—fine
-      console.log("Music not playing:", e);
-    }
+    }catch(e){}
   }
 
   upsetBtn.addEventListener('click', () => {
     note.innerHTML = randomPick(upsetLines);
     upsetBtn.classList.remove('wiggle');
-    void upsetBtn.offsetWidth; // restart animation
+    void upsetBtn.offsetWidth;
     upsetBtn.classList.add('wiggle');
     heartBurst(6);
   });
 
   okBtn.addEventListener('click', async () => {
     note.innerHTML = randomPick(okLines);
-    heartBurst(14);
-    await tryPlay();
-  });
-
-  talkBtn.addEventListener('click', () => {
-    note.innerHTML = randomPick(talkLines) + "<br><br><b>Madam ji</b>, aap bas ek line bol do: “We’ll talk.”";
-    heartBurst(10);
+    heartBurst(16);
+    await startMusic();
   });
 </script>
 
