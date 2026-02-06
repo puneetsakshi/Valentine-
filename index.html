@@ -8,34 +8,100 @@
   <style>
     :root{
       --bg1:#fde2e4; --bg2:#cddafd;
-      --card: rgba(255,255,255,.82);
-      --shadow: 0 18px 50px rgba(0,0,0,.18);
+      --ink:#0f172a;
+      --glass: rgba(255,255,255,.72);
+      --glass2: rgba(255,255,255,.52);
+      --shadow: 0 22px 70px rgba(15, 23, 42, .18);
+      --shadow2: 0 14px 34px rgba(15, 23, 42, .14);
+      --green:#22c55e;
+      --dark:#111827;
     }
     *{box-sizing:border-box}
     body{
       margin:0; min-height:100svh;
       display:flex; align-items:center; justify-content:center;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 700px at 20% 10%, #fff7fb 0%, transparent 55%),
+                  radial-gradient(900px 600px at 80% 90%, #f0f7ff 0%, transparent 55%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
       padding: 18px;
       overflow:hidden;
       -webkit-tap-highlight-color: transparent;
     }
-    .card{
-      width:min(560px,96vw);
-      background:var(--card);
-      border:1px solid rgba(255,255,255,.7);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      padding: 18px 16px 16px;
-      box-shadow: var(--shadow);
-      position:relative;
+
+    /* dreamy blobs */
+    .blob{
+      position:fixed;
+      width: 420px; height: 420px;
+      border-radius: 999px;
+      filter: blur(22px);
+      opacity: .35;
+      mix-blend-mode: screen;
+      animation: drift 10s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
     }
+    .b1{ background: radial-gradient(circle at 30% 30%, #ffb3c7, transparent 60%); left:-120px; top:-120px; }
+    .b2{ background: radial-gradient(circle at 70% 40%, #a6d8ff, transparent 60%); right:-150px; bottom:-140px; animation-duration: 12s; }
+    .b3{ background: radial-gradient(circle at 40% 60%, #ffd6a5, transparent 62%); left: 55%; top: -90px; width:320px; height:320px; opacity:.22; animation-duration: 14s; }
+    @keyframes drift{ from{ transform: translate3d(0,0,0) scale(1); } to{ transform: translate3d(18px,22px,0) scale(1.06);} }
+
+    .wrap{ width:min(590px,96vw); position:relative; z-index:2; }
+    .cardBorder{
+      background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.18));
+      padding: 1px;
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+    }
+    .card{
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 25px;
+      padding: 14px 14px 14px;
+      backdrop-filter: blur(14px);
+      position:relative;
+      overflow:hidden;
+    }
+    .shine{
+      position:absolute; inset:-40% -40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 35%),
+                  radial-gradient(circle at 70% 60%, rgba(255,255,255,.18), transparent 45%);
+      transform: rotate(12deg);
+      pointer-events:none;
+      opacity:.55;
+    }
+
+    .topRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .chipBtn{
+      border:0;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 850;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: 0 10px 22px rgba(15,23,42,.10);
+      transition: transform .15s ease, filter .15s ease;
+      white-space:nowrap;
+    }
+    .chipBtn:active{ transform: translateY(1px) scale(.99); filter: brightness(.98); }
+    .chipLeft{ opacity:.85; }
+
     h1{
-      margin: 4px 0 8px;
-      font-size: 26px;
+      margin: 6px 0 6px;
+      font-size: 28px;
       line-height: 1.15;
       text-align:center;
+      letter-spacing: -0.3px;
     }
     .sub{
       margin: 0 0 14px;
@@ -43,51 +109,96 @@
       font-size: 15px;
       opacity: .85;
     }
+
     .note{
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(255,255,255,.75);
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.6);
       border-radius: 18px;
       padding: 14px 12px;
       font-size: 16px;
-      line-height: 1.45;
-      min-height: 120px;
+      line-height: 1.5;
+      min-height: 128px;
       text-align:center;
+      box-shadow: var(--shadow2);
+      transition: transform .25s ease, opacity .25s ease;
     }
+    .note.fade{ opacity:0; transform: translateY(6px); }
+
     .actions{
       margin-top: 16px;
       display:flex;
       gap:12px;
       justify-content:center;
+      flex-wrap:wrap;
     }
-    button{
+
+    button.action{
       border:0;
       border-radius:999px;
       padding: 14px 18px;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 850;
       cursor:pointer;
-      box-shadow: 0 12px 28px rgba(0,0,0,.14);
       user-select:none;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, .18);
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      will-change: transform;
     }
-    .b1{ background:#111827; color:#fff; }
-    .b2{ background:#22c55e; color:#fff; }
+    button.action:active{
+      transform: translateY(1px) scale(.99);
+      filter: brightness(.98);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, .16);
+    }
+    .bDark{ background: linear-gradient(180deg, #1f2937, #0b1220); color:#fff; }
+    .bGreen{ background: linear-gradient(180deg, #34d399, #16a34a); color:#fff; }
 
-    .heart{
+    .sparkleLine{
+      margin-top: 10px;
+      display:flex; justify-content:center; gap:8px; flex-wrap:wrap;
+    }
+    .pill{
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 750;
+      opacity:.85;
+    }
+    .small{
+      margin-top: 10px;
+      font-size: 12.5px;
+      opacity: .72;
+      text-align:center;
+    }
+
+    /* floating hearts + sparkles */
+    .heart, .spark{
       position:fixed;
       transform:translate(-50%,-50%);
-      font-size:18px;
       opacity:0;
-      animation: floatUp 1.9s ease-in forwards;
       pointer-events:none;
       z-index: 99;
     }
+    .heart{ animation: floatUp 1.9s ease-in forwards; font-size:18px; }
     @keyframes floatUp{
-      0%{ transform:translate(-50%,-10%) scale(.9); opacity:0}
-      15%{ opacity:1}
-      100%{ transform:translate(-50%,-220%) scale(1.35); opacity:0}
+      0%{ transform:translate(-50%,-20%) scale(.9); opacity:0}
+      12%{ opacity:1}
+      100%{ transform:translate(-50%,-240%) scale(1.45); opacity:0}
     }
-
-    .wiggle{ animation: wiggle .25s ease-in-out 2; }
+    .spark{
+      width:6px; height:6px;
+      border-radius:999px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 0 12px rgba(255,255,255,.85);
+      animation: sparkle 1.2s ease-out forwards;
+    }
+    @keyframes sparkle{
+      0%{ transform:translate(-50%,-50%) scale(.6); opacity:0}
+      15%{ opacity:1}
+      100%{ transform:translate(-50%,-140%) scale(0); opacity:0}
+    }
+    .wiggle{ animation: wiggle .28s ease-in-out 2; }
     @keyframes wiggle{
       0%{ transform:translateY(0) }
       25%{ transform:translateY(-2px) }
@@ -96,45 +207,152 @@
       100%{ transform:translateY(0) }
     }
 
-    .small{
-      margin-top: 12px;
-      font-size: 12.5px;
-      opacity: .7;
-      text-align:center;
+    /* Bottom sheet gift picker */
+    .sheetBackdrop{
+      position:fixed; inset:0;
+      background: rgba(15,23,42,.25);
+      backdrop-filter: blur(6px);
+      display:none;
+      z-index: 200;
+      padding: 16px;
+    }
+    .sheet{
+      position:absolute;
+      left: 16px; right: 16px; bottom: 16px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 22px;
+      box-shadow: 0 22px 70px rgba(15,23,42,.22);
+      padding: 14px;
+      transform: translateY(18px);
+      opacity: 0;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .sheetBackdrop.show .sheet{
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .sheetTitle{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .sheetTitle h3{
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+    .closeBtn{
+      border:0;
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 850;
+      cursor:pointer;
+    }
+    .giftGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .gift{
+      border:0;
+      border-radius: 18px;
+      padding: 12px 10px;
+      text-align:left;
+      background: rgba(253,226,228,.55);
+      border: 1px solid rgba(238,156,167,.35);
+      box-shadow: 0 10px 24px rgba(15,23,42,.10);
+      cursor:pointer;
+      transition: transform .15s ease;
+    }
+    .gift:active{ transform: translateY(1px) scale(.99); }
+    .gift .t{ font-weight: 900; font-size: 14px; }
+    .gift .d{ font-size: 12.5px; opacity:.72; margin-top: 4px; }
+
+    @media (prefers-reduced-motion: reduce){
+      .blob{animation:none}
+      .heart,.spark{animation:none}
+      .sheet{transition:none}
     }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h1>Madam ji… ❤️</h1>
-  <div class="sub">Main bas itna chahta hoon ki aap theek feel karo.</div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 
-  <div class="note" id="note">
-    Agar meri kisi baat ya action se aap hurt hui ho,<br>
-    main genuinely sorry hoon.<br><br>
-    Koi pressure nahi… bas dil se. 🤍
+  <div class="wrap">
+    <div class="cardBorder">
+      <div class="card" id="card">
+        <div class="shine"></div>
+
+        <div class="topRow">
+          <div class="chipLeft chipBtn" style="cursor:default;">🤍 No pressure</div>
+          <button class="chipBtn" id="giftBtn">🎁 Small Gift</button>
+        </div>
+
+        <h1>Madam ji… ❤️</h1>
+        <div class="sub">Main bas itna chahta hoon ki aap theek feel karo.</div>
+
+        <div class="note" id="note">
+          Agar meri kisi baat ya action se aap hurt hui ho,<br>
+          main genuinely sorry hoon.<br><br>
+          Koi pressure nahi… bas dil se. 🤍
+        </div>
+
+        <div class="actions">
+          <button class="action bDark" id="upset">Abhi bhi thoda gussa 😤</button>
+          <button class="action bGreen" id="ok">Okay… thoda sa 😊</button>
+        </div>
+
+        <div class="sparkleLine">
+          <div class="pill">🎵 “Okay” pe music</div>
+          <div class="pill">✨ Tap = sparkles</div>
+        </div>
+
+        <div class="small">Gift choose karo, main pakka le aunga 😄</div>
+      </div>
+    </div>
   </div>
 
-  <div class="actions">
-    <button class="b1" id="upset">Abhi bhi thoda gussa 😤</button>
-    <button class="b2" id="ok">Okay… thoda sa 😊</button>
-  </div>
+  <!-- Music (direct online link) -->
+  <audio id="bgm" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c7f6c7b7a.mp3" type="audio/mpeg">
+  </audio>
 
-  <div class="small">
-     ✨
-  </div>
-</div>
+  <!-- Gift bottom sheet -->
+  <div class="sheetBackdrop" id="sheetBackdrop" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Gift picker">
+      <div class="sheetTitle">
+        <h3>Madam ji, aap kya chahogi? 💖</h3>
+        <button class="closeBtn" id="closeSheet">Close</button>
+      </div>
 
-<audio id="bgm" preload="auto" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c7f6c7b7a.mp3" type="audio/mpeg">
-</audio>
+      <div class="giftGrid" id="giftGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="small" style="margin-top:10px; opacity:.7;">
+        (Choose one. Main “haan” bolne wala hoon 😄)
+      </div>
+    </div>
+  </div>
 
 <script>
   const note = document.getElementById('note');
+  const card = document.getElementById('card');
   const upsetBtn = document.getElementById('upset');
   const okBtn = document.getElementById('ok');
   const bgm = document.getElementById('bgm');
+
+  const giftBtn = document.getElementById('giftBtn');
+  const sheetBackdrop = document.getElementById('sheetBackdrop');
+  const closeSheet = document.getElementById('closeSheet');
+  const giftGrid = document.getElementById('giftGrid');
 
   const upsetLines = [
     "Theek hai… aap gussa raho. Main yahin hoon. 🫶",
@@ -147,42 +365,134 @@
     "Aaj nahi toh kal, main prove kar dunga. 🤝"
   ];
 
+  const gifts = [
+    { title:"Perfume ✨", desc:"Aapki vibe jaisa — classy." },
+    { title:"Book Set 📚", desc:"Cozy evenings for you." },
+    { title:"Flowers 💐", desc:"Simple & pretty." },
+    { title:"Chocolate Box 🍫", desc:"Mood sweet ho jayega." },
+    { title:"Dinner Date 🍽️", desc:"Aap choose karo place." },
+    { title:"Spa / Self-care 🧖‍♀️", desc:"Relax + pamper time." }
+  ];
+
   function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-  function heartBurst(n=12){
+  function setNoteWithSoftTransition(html){
+    note.classList.add('fade');
+    setTimeout(()=>{
+      note.innerHTML = html;
+      note.classList.remove('fade');
+    }, 180);
+  }
+
+  function heartBurst(n=10){
     const emojis = ["💗","💖","💘","💕","❤️"];
     for(let i=0;i<n;i++){
       const s = document.createElement('span');
       s.className = 'heart';
       s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-      s.style.left = (40 + Math.random()*20) + "%";
-      s.style.top  = (58 + Math.random()*10) + "%";
-      s.style.fontSize = (16 + Math.random()*16) + "px";
-      s.style.animationDelay = (Math.random()*0.15) + "s";
+      s.style.left = (42 + Math.random()*16) + "%";
+      s.style.top  = (62 + Math.random()*10) + "%";
+      s.style.fontSize = (16 + Math.random()*18) + "px";
+      s.style.animationDelay = (Math.random()*0.12) + "s";
       document.body.appendChild(s);
       s.addEventListener('animationend', ()=> s.remove());
     }
   }
 
-  async function startMusic(){
+  function sparkBurst(n=14){
+    for(let i=0;i<n;i++){
+      const s = document.createElement('span');
+      s.className = 'spark';
+      s.style.left = (40 + Math.random()*20) + "%";
+      s.style.top  = (62 + Math.random()*10) + "%";
+      s.style.animationDelay = (Math.random()*0.08) + "s";
+      document.body.appendChild(s);
+      s.addEventListener('animationend', ()=> s.remove());
+    }
+  }
+
+  async function startMusicWithFade(){
     try{
-      bgm.volume = 0.6;
+      bgm.volume = 0.0;
       await bgm.play();
+      let v = 0.0;
+      const target = 0.62;
+      const step = 0.03;
+      const t = setInterval(()=>{
+        v = Math.min(target, v + step);
+        bgm.volume = v;
+        if(v >= target) clearInterval(t);
+      }, 120);
     }catch(e){}
   }
 
+  // Buttons
   upsetBtn.addEventListener('click', () => {
-    note.innerHTML = randomPick(upsetLines);
+    setNoteWithSoftTransition(randomPick(upsetLines));
     upsetBtn.classList.remove('wiggle');
     void upsetBtn.offsetWidth;
     upsetBtn.classList.add('wiggle');
     heartBurst(6);
+    sparkBurst(10);
   });
 
   okBtn.addEventListener('click', async () => {
-    note.innerHTML = randomPick(okLines);
+    setNoteWithSoftTransition(randomPick(okLines));
     heartBurst(16);
-    await startMusic();
+    sparkBurst(18);
+    await startMusicWithFade();
+  });
+
+  // Tap anywhere on card -> subtle sparkles
+  card.addEventListener('click', () => {
+    sparkBurst(10);
+  });
+
+  // Gift sheet
+  function openSheet(){
+    sheetBackdrop.style.display = 'block';
+    // allow transition
+    requestAnimationFrame(()=> sheetBackdrop.classList.add('show'));
+    sheetBackdrop.setAttribute('aria-hidden','false');
+    sparkBurst(14);
+  }
+  function closeSheetFn(){
+    sheetBackdrop.classList.remove('show');
+    sheetBackdrop.setAttribute('aria-hidden','true');
+    setTimeout(()=>{ sheetBackdrop.style.display = 'none'; }, 180);
+  }
+
+  giftBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openSheet();
+  });
+
+  closeSheet.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeSheetFn();
+  });
+
+  sheetBackdrop.addEventListener('click', (e) => {
+    if(e.target === sheetBackdrop) closeSheetFn();
+  });
+
+  // Render gift options
+  gifts.forEach(g=>{
+    const btn = document.createElement('button');
+    btn.className = 'gift';
+    btn.innerHTML = `<div class="t">${g.title}</div><div class="d">${g.desc}</div>`;
+    btn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      closeSheetFn();
+      setNoteWithSoftTransition(
+        `Madam ji, <b>${g.title}</b> done ✅<br><br>` +
+        `Aap bas thoda sa smile kar do… baaki main sambhal lunga 🤍`
+      );
+      heartBurst(18);
+      sparkBurst(22);
+      await startMusicWithFade();
+    });
+    giftGrid.appendChild(btn);
   });
 </script>
 
